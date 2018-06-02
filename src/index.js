@@ -1,33 +1,48 @@
-// create new component that gets put into DOM
+import _ from 'lodash'
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import YTSearch from 'youtube-api-search'
 import SearchBar from './components/searchbar'
 import VideoList from './components/videolist'
 import VideoDetail from './components/videodetail'
-
 const API_KEY = 'AIzaSyCQJeJqGlgfhiEC1dfYwcZfbOfrgusXZJE'
 
 class App extends Component {
 	constructor(props) {
 		super(props) 
 
-		this.state = { videos: [] } // list of vidoes aka objects
+		this.state = { 
+			videos: [], 
+			selectedVideo: null
+		} // list of vidoes aka objects
 
+		this.videoSearch('surfboards')
 // does search and gets response back on this.setState 
-		YTSearch({ key: API_KEY, term: 'surfboards' }, (videos) => {
-			this.setState({ videos })
+	}
+
+	videoSearch(term) {
+		YTSearch({ key: API_KEY, term: term}, (videos) => {
+			this.setState({ 
+				videos: videos,
+				selectedVideo: videos[0] 
+			})	
 // when search is complete it updates with new list of videos using setState
 // this.setState({ videos: videos }) only works when key/var are same name
+
 		})
 	}
 
 	render() {
+	//thislodash takes in term, which can only b called 300 ms
+		const videoSearch = _.debounce((term) => { this.videoSearch(term) }, 300)
+
 		return (
 			<div>
-				<SearchBar />
-				<VideoDetail video={this.state.videos[0]} />
-				<VideoList video={this.state.videos} />
+				<SearchBar onSearchTermChange={term => this.videoSearch(term)} />
+				<VideoDetail video={this.state.selectedVideo} />
+				<VideoList 
+					onVideoSelect={selectedVideo => this.setState({selectedVideo}) }
+					videos={this.state.videos} />
 
 			</div>
 		);

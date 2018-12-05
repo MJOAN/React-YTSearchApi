@@ -1,8 +1,8 @@
-# ReduxSimpleStarter 
+# YT Search API with React Redux
 
-This is a YouTube like search created with React and Redux. Thank you to Stephen Grider, for the video and walk-through: https://github.com/StephenGrider 
+This is a YouTube like search created with React and Redux. Thank you to [Stephen Grider](https://github.com/StephenGrider) for the setup tutorial.
 
-#### To Begin: 
+#### 
 Checkout the repo, install dependencies, then start the gulp process with the following:
 
 ```
